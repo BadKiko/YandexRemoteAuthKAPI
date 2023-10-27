@@ -1,4 +1,4 @@
-package com.kiko.yandexremoteauthapi.data.code.module
+package com.kiko.yandexremoteauthapi.di.code
 
 import com.kiko.yandexremoteauthapi.data.code.remote.api.CodeApi
 import com.kiko.yandexremoteauthapi.data.code.repository.CodeRepositoryImpl

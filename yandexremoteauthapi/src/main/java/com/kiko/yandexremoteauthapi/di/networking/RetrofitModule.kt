@@ -1,4 +1,4 @@
-package com.kiko.yandexremoteauthapi.di
+package com.kiko.yandexremoteauthapi.di.networking
 
 import com.kiko.yandexremoteauthapi.YandexRemoteAuth
 import com.kiko.yandexremoteauthapi.constants.YandexRemoteAuthConstants

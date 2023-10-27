@@ -1,11 +1,10 @@
 package com.kiko.yandexremoteauthapi
 
 import com.kiko.yandexremoteauthapi.constants.YandexRemoteAuthConstants
-import com.kiko.yandexremoteauthapi.data.code.module.CodeModule
+import com.kiko.yandexremoteauthapi.di.code.CodeModule
 import com.kiko.yandexremoteauthapi.data.code.remote.dto.CodeRequestEntity
-import com.kiko.yandexremoteauthapi.data.code.remote.dto.CodeResponseEntity
 import com.kiko.yandexremoteauthapi.data.common.CodeYandexAuthState
-import com.kiko.yandexremoteauthapi.di.RetrofitModule
+import com.kiko.yandexremoteauthapi.di.networking.RetrofitModule
 import com.kiko.yandexremoteauthapi.domain.code.usecase.CodeUseCase
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.message
@@ -37,5 +36,9 @@ class YandexRemoteAuth(
             is ApiResponse.Failure -> CodeYandexAuthState.Error(codeUseCase.message())
             is ApiResponse.Success -> CodeYandexAuthState.Success(codeUseCase.data)
         }
+    }
+
+    suspend fun getAuth(){
+
     }
 }
