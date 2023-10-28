@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.kiko.yandexremoteauthapi.YandexRemoteAuth
 import com.kiko.yandexremoteauthapi.data.auth.remote.dto.AuthRequestEntity
 import com.kiko.yandexremoteauthapi.data.code.remote.dto.CodeRequestEntity
+import com.kiko.yandexremoteauthapi.data.common.AuthYandexAuthState
 import com.kiko.yandexremoteauthapi.data.common.CodeYandexAuthState
 import com.kiko.yandexremoteauthkapi.ui.theme.YandexRemoteAuthKAPITheme
 import java.util.UUID
@@ -39,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     LaunchedEffect(true) {
                         when (val codeResponse = yandexRemoteAuth.getCode(
                             CodeRequestEntity(
-                                "23cabbbdc6cd418abb4b39c32c41195d",
+                                BuildConfig.YANDEX_CLIENT_ID,
                                 UUID.randomUUID().toString(),
                                 Build.MODEL
                             )
@@ -47,7 +48,7 @@ class MainActivity : ComponentActivity() {
                             is CodeYandexAuthState.Error -> value = codeResponse.message
                             is CodeYandexAuthState.Success -> {
                                 value = codeResponse.data.userCode
-                                yandexRemoteAuth.getAuth(
+                                when (val authResponse = yandexRemoteAuth.getAuth(
                                     AuthRequestEntity(
                                         "device_code",
                                         codeResponse.data.deviceCode,
@@ -56,7 +57,14 @@ class MainActivity : ComponentActivity() {
                                         codeResponse.data.interval,
                                         codeResponse.data.expiresIn
                                     )
-                                )
+                                )) {
+                                    is AuthYandexAuthState.Error -> {
+                                        value = "error in auth"
+                                    }
+                                    is AuthYandexAuthState.Success -> {
+                                        value = "success! token = ${authResponse.data.accessToken}"
+                                    }
+                                }
                             }
                         }
                     }
