@@ -7,6 +7,6 @@ import com.skydoves.sandwich.ApiResponse
 
 class AuthUseCase(private val authRepository: AuthRepository) {
     suspend fun getAuth(authRequestEntity: AuthRequestEntity): ApiResponse<AuthResponseEntity> {
-        return authRepository.getCode(authRequestEntity)
+        return authRepository.getAuth(authRequestEntity)
     }
 }

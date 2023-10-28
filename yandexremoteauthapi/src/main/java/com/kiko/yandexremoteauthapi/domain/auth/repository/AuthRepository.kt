@@ -5,5 +5,5 @@ import com.kiko.yandexremoteauthapi.data.auth.remote.dto.AuthResponseEntity
 import com.skydoves.sandwich.ApiResponse
 
 interface AuthRepository {
-    suspend fun getCode(requestEntity: AuthRequestEntity): ApiResponse<AuthResponseEntity>
+    suspend fun getAuth(requestEntity: AuthRequestEntity): ApiResponse<AuthResponseEntity>
 }

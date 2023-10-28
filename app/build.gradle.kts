@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidApplication)
@@ -14,7 +17,8 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
+        manifestPlaceholders["YANDEX_CLIENT_SECRET"] = getClientSecret()
+        manifestPlaceholders["YANDEX_CLIENT_ID"] = getClientID()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -29,6 +33,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+        all {
+            buildConfigField("String", "YANDEX_CLIENT_SECRET", getClientSecret())
+            buildConfigField("String", "YANDEX_CLIENT_ID", getClientID())
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -39,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
@@ -49,6 +58,19 @@ android {
         }
     }
 }
+
+fun getClientID(): String {
+    val props = Properties()
+    props.load(FileInputStream(File("secrets.properties")))
+    return props["yandex.client_id"].toString()
+}
+
+fun getClientSecret(): String {
+    val props = Properties()
+    props.load(FileInputStream(File("secrets.properties")))
+    return props["yandex.client_secret"].toString()
+}
+
 
 dependencies {
 

@@ -1,10 +1,14 @@
 package com.kiko.yandexremoteauthapi
 
 import com.kiko.yandexremoteauthapi.constants.YandexRemoteAuthConstants
+import com.kiko.yandexremoteauthapi.data.auth.remote.dto.AuthRequestEntity
 import com.kiko.yandexremoteauthapi.di.code.CodeModule
 import com.kiko.yandexremoteauthapi.data.code.remote.dto.CodeRequestEntity
+import com.kiko.yandexremoteauthapi.data.code.remote.dto.CodeResponseEntity
 import com.kiko.yandexremoteauthapi.data.common.CodeYandexAuthState
+import com.kiko.yandexremoteauthapi.di.auth.AuthModule
 import com.kiko.yandexremoteauthapi.di.networking.RetrofitModule
+import com.kiko.yandexremoteauthapi.domain.auth.usecase.AuthUseCase
 import com.kiko.yandexremoteauthapi.domain.code.usecase.CodeUseCase
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.message
@@ -29,7 +33,7 @@ class YandexRemoteAuth(
         }
     }
 
-    suspend fun getCode(codeRequestEntity: CodeRequestEntity) : CodeYandexAuthState {
+    suspend fun getCode(codeRequestEntity: CodeRequestEntity): CodeYandexAuthState {
         val codeApi = CodeModule.provideCodeApi(retrofit)
         val codeRepository = CodeModule.provideCodeRepository(codeApi)
         return when (val codeUseCase = CodeUseCase(codeRepository).getCode(codeRequestEntity)) {
@@ -38,7 +42,12 @@ class YandexRemoteAuth(
         }
     }
 
-    suspend fun getAuth(){
+    suspend fun getAuth(authRequestEntity: AuthRequestEntity) {
+        val authApi = AuthModule.provideAuthApi(retrofit)
+        val authRepository = AuthModule.provideAuthRepository(authApi)
 
+        AuthUseCase(authRepository).getAuth(
+            authRequestEntity
+        )
     }
 }

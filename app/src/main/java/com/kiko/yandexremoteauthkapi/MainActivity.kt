@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.kiko.yandexremoteauthapi.YandexRemoteAuth
+import com.kiko.yandexremoteauthapi.data.auth.remote.dto.AuthRequestEntity
 import com.kiko.yandexremoteauthapi.data.code.remote.dto.CodeRequestEntity
 import com.kiko.yandexremoteauthapi.data.common.CodeYandexAuthState
 import com.kiko.yandexremoteauthkapi.ui.theme.YandexRemoteAuthKAPITheme
@@ -29,23 +30,34 @@ class MainActivity : ComponentActivity() {
             YandexRemoteAuthKAPITheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
                     var value by remember { mutableStateOf("check") }
 
                     val yandexRemoteAuth = YandexRemoteAuth.create()
 
                     LaunchedEffect(true) {
-                        when (val yandexRemoteAuth = yandexRemoteAuth.getCode(
+                        when (val codeResponse = yandexRemoteAuth.getCode(
                             CodeRequestEntity(
                                 "23cabbbdc6cd418abb4b39c32c41195d",
                                 UUID.randomUUID().toString(),
                                 Build.MODEL
                             )
                         )) {
-                            is CodeYandexAuthState.Error -> value = yandexRemoteAuth.message
-                            is CodeYandexAuthState.Success -> value = yandexRemoteAuth.data.userCode
+                            is CodeYandexAuthState.Error -> value = codeResponse.message
+                            is CodeYandexAuthState.Success -> {
+                                value = codeResponse.data.userCode
+                                yandexRemoteAuth.getAuth(
+                                    AuthRequestEntity(
+                                        "device_code",
+                                        codeResponse.data.deviceCode,
+                                        BuildConfig.YANDEX_CLIENT_ID,
+                                        BuildConfig.YANDEX_CLIENT_SECRET,
+                                        codeResponse.data.interval,
+                                        codeResponse.data.expiresIn
+                                    )
+                                )
+                            }
                         }
                     }
 

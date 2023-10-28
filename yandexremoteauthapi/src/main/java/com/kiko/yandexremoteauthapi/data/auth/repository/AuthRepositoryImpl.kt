@@ -11,9 +11,9 @@ import kotlin.coroutines.suspendCoroutine
 
 class AuthRepositoryImpl(private val authApi: AuthApi) : AuthRepository {
     // Количество попыток
-    var repeats: Int = 0
+    private var repeats: Int = 0
 
-    override suspend fun getCode(requestEntity: AuthRequestEntity): ApiResponse<AuthResponseEntity> {
+    override suspend fun getAuth(requestEntity: AuthRequestEntity): ApiResponse<AuthResponseEntity> {
         while (true) {
             return suspendCoroutine { suspendCoroutine ->
                 authApi.getAuth(
@@ -31,7 +31,7 @@ class AuthRepositoryImpl(private val authApi: AuthApi) : AuthRepository {
                             }
                         }
 
-                        is ApiResponse.Success -> {
+                         is ApiResponse.Success -> {
                             suspendCoroutine.resume(it)
                         }
                     }
