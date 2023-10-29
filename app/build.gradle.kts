@@ -61,14 +61,24 @@ android {
 
 fun getClientID(): String {
     val props = Properties()
-    props.load(FileInputStream(File("secrets.properties")))
-    return props["yandex.client_id"].toString()
+    return try {
+        props.load(FileInputStream(File("secrets.properties")))
+        props["yandex.client_id"].toString()
+    }
+    catch (e: Exception){
+        "\"empty\""
+    }
 }
 
 fun getClientSecret(): String {
     val props = Properties()
-    props.load(FileInputStream(File("secrets.properties")))
-    return props["yandex.client_secret"].toString()
+    return try {
+        props.load(FileInputStream(File("secrets.properties")))
+        props["yandex.client_secret"].toString()
+    }
+    catch (e: Exception){
+        "\"empty\""
+    }
 }
 
 
