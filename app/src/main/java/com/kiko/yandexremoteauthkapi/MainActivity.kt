@@ -64,8 +64,12 @@ class MainActivity : ComponentActivity() {
                                     is AuthYandexAuthState.Success -> {
                                         value = "success! token = ${authResponse.data.accessToken}"
                                     }
+
+                                    AuthYandexAuthState.Idle -> TODO()
                                 }
                             }
+
+                            CodeYandexAuthState.Idle -> TODO()
                         }
                     }
 
