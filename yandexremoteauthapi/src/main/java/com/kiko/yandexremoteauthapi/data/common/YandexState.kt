@@ -18,5 +18,5 @@ import com.skydoves.sealedx.core.annotations.ExtensiveSealed
 sealed interface YandexAuthState {
     data class Success(val data: Extensive) : YandexAuthState
     data class Error(val message: String) : YandexAuthState
-    data object Idle : YandexAuthState
+    object Idle : YandexAuthState
 }

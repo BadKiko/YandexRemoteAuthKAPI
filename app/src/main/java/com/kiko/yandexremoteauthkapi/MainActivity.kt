@@ -65,11 +65,11 @@ class MainActivity : ComponentActivity() {
                                         value = "success! token = ${authResponse.data.accessToken}"
                                     }
 
-                                    AuthYandexAuthState.Idle -> TODO()
+                                    AuthYandexAuthState.Idle -> {}
                                 }
                             }
 
-                            CodeYandexAuthState.Idle -> TODO()
+                            CodeYandexAuthState.Idle -> {}
                         }
                     }
 

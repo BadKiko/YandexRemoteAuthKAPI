@@ -67,7 +67,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.kiko.yandexremoteauthkapi"
             artifactId = "yandexremoteauthkapi"
-            version = "0.0.1_inwork"
+            version = "0.0.1_1a"
             afterEvaluate {
                 from(components["release"])
             }
